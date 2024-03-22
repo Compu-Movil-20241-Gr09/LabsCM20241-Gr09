@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Labs20241-Gr09</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="name">Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="gender">Gender</string>
+    <string name="date_of_birth">Date of birth</string>
 </resources>
