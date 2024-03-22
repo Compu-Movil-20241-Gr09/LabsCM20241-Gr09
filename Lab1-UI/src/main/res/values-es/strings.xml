@@ -9,4 +9,7 @@
     <string name="other">Otro</string>
     <string name="gender">"Género "</string>
     <string name="date_of_birth">Fechas de nacimiento</string>
+    <string name="primary">Primaria</string>
+    <string name="secondary">Secundaria</string>
+    <string name="university">Universidad</string>
 </resources>

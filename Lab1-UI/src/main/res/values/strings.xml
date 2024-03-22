@@ -8,4 +8,7 @@
     <string name="other">Other</string>
     <string name="gender">Gender</string>
     <string name="date_of_birth">Date of birth</string>
+    <string name="primary">Primary</string>
+    <string name="secondary">Secondary</string>
+    <string name="university">University</string>
 </resources>
