@@ -1,10 +1,17 @@
 package co.edu.udea.compumovil.gr09_20241.lab1.ui
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,17 +24,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr09_20241.lab1.R
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.BasicTextField
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.LabelledDatePicker
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.LabelledRadioGroup
-
+import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.LabelledSpinnerSelector
 
 @Composable
 fun PersonalDataScreen(
-    dataViewModel: DataViewModel = viewModel()
+    dataViewModel: DataViewModel = viewModel(),
+    onNextButtonClicked: () -> Unit
 ){
     val formUiState by dataViewModel.uiState.collectAsState()
 
@@ -38,7 +48,8 @@ fun PersonalDataScreen(
     if(orientation == Configuration.ORIENTATION_PORTRAIT){
         PersonalDataPortrait(
             formUiState,
-            dataViewModel
+            dataViewModel,
+            onNextButtonClicked
         )
     }else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
         PersonalDataLandscape()
@@ -48,7 +59,8 @@ fun PersonalDataScreen(
 @Composable
 fun PersonalDataPortrait(
     formUiState: FormUiState,
-    dataViewModel: DataViewModel
+    dataViewModel: DataViewModel,
+    onNextButtonClicked: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -62,7 +74,7 @@ fun PersonalDataPortrait(
         BasicTextField(
             value = formUiState.name,
             onValueChange = { dataViewModel.setName(it) },
-            label = stringResource(R.string.name),
+            label = stringResource(R.string.name) + "*",
             imageVector = Icons.Default.Person,
             readOnly = false
         )
@@ -71,24 +83,41 @@ fun PersonalDataPortrait(
         BasicTextField(
             value = formUiState.lastName,
             onValueChange = { dataViewModel.setLastName(it) },
-            label = stringResource(R.string.last_name),
+            label = stringResource(R.string.last_name) + "*",
             imageVector = Icons.Default.Person,
             readOnly = false
         )
 
         //  RadioGroup for Gender
         LabelledRadioGroup(
+            imageVector = Icons.Default.Face,
             label = stringResource(R.string.gender),
             items = DataSource.genderOptions.map { id -> context.resources.getString(id) },
             selection = formUiState.gender,
             onItemClick =   { dataViewModel.setGender(it)}
         )
 
+        // DatePicker for Birth date
         LabelledDatePicker(
+            label = stringResource(R.string.date_of_birth) + "*",
             value = formUiState.birth,
             onValueChange = { dataViewModel.setBirth(it) }
         )
 
+        LabelledSpinnerSelector(
+            label = stringResource(R.string.school_grade),
+            items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
+            selection = formUiState.scholarity,
+            onSelectionChange = { dataViewModel.setScholarity(it) },
+            imageVector = Icons.Default.Info
+        )
+
+        Button(onClick = onNextButtonClicked ) {
+            Row {
+                Text(text = "Next")
+                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "")
+            }
+        }
     }
 }
 
@@ -102,10 +131,14 @@ fun PersonalDataLandscape(){
 fun PersonalScreenPreview(){
     val dataViewModel = DataViewModel()
     val formUiState by dataViewModel.uiState.collectAsState()
+    val navController: NavHostController = rememberNavController()
     MaterialTheme {
         PersonalDataPortrait(
             formUiState,
-            dataViewModel
+            dataViewModel,
+            onNextButtonClicked = {
+                navController.navigate("contactData")
+            }
         )
     }
 }

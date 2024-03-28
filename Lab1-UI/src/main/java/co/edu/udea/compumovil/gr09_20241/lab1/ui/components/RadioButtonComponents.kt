@@ -3,6 +3,7 @@ package co.edu.udea.compumovil.gr09_20241.lab1.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -62,11 +64,21 @@ fun RadioGroup(
 @Composable
 fun LabelledRadioGroup(
     label: String,
+    imageVector: ImageVector,
     items: List<String>,
     selection: String,
     onItemClick: ((String) -> Unit)
 ){
+    /*
     Column(horizontalAlignment = Alignment.CenterHorizontally){
+        Text(text = label)
+        RadioGroup(items = items, selection = selection, onItemClick = onItemClick)
+    }*/
+
+    Row (
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Icon(imageVector = imageVector, contentDescription = "")
         Text(text = label)
         RadioGroup(items = items, selection = selection, onItemClick = onItemClick)
     }

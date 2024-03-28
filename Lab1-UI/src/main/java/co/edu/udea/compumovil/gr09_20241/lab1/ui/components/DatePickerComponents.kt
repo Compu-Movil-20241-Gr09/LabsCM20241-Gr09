@@ -20,6 +20,7 @@ import java.util.Date
 
 @Composable
 fun LabelledDatePicker(
+    label: String,
     value: String,
     onValueChange: ((String) -> Unit)
 ){
@@ -29,7 +30,7 @@ fun LabelledDatePicker(
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            label = stringResource(R.string.date_of_birth),
+            label = label,
             imageVector = Icons.Default.DateRange,
             readOnly = true
         )
