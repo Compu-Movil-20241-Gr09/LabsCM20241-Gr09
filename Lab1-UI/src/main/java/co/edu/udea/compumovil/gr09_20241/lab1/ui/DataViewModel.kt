@@ -31,7 +31,7 @@ class DataViewModel: ViewModel() {
 
     fun setBirth(inputBirth: String){
         _uiState.update { currentState ->
-            currentState.copy(name = inputBirth)
+            currentState.copy(birth = inputBirth)
         }
     }
 
@@ -49,7 +49,7 @@ class DataViewModel: ViewModel() {
 
     fun setAddress(inputAddress: String){
         _uiState.update { currentState ->
-            currentState.copy(name = inputAddress)
+            currentState.copy(address = inputAddress)
         }
     }
 
