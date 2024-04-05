@@ -1,6 +1,7 @@
 package co.edu.udea.compumovil.gr09_20241.lab1.ui
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -78,9 +79,7 @@ fun PersonalDataPortrait(
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
             },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            )
+            singleLine = true
         )
 
         // Last Name Input
@@ -91,9 +90,7 @@ fun PersonalDataPortrait(
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
             },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            )
+            singleLine = true
         )
 
         //  RadioGroup for Gender

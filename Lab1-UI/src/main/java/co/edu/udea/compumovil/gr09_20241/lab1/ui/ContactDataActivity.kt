@@ -18,13 +18,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,7 +33,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr09_20241.lab1.R
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource
+import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource.latamCities
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
+import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.AutoCompleteTextField
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldSpinnerSelector
 
 @Composable
@@ -64,23 +67,31 @@ fun ContactDataPortrait(
 ){
     val context = LocalContext.current
 
+    // Spinner de ciudades
+    val citiesForSelectedCountry by remember(formUiState.country) {
+        derivedStateOf {
+            latamCities.filter { it.first == formUiState.country }
+                .map { it.second }
+        }
+    }
+
     Column (
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         // Phone Number*
         OutlinedTextField(
             value = formUiState.phoneNumber,
             onValueChange = { dataViewModel.setPhoneNumber(it) },
             label = { Text(text = stringResource(R.string.phone_number) + "*") },
-            leadingIcon =  {
+            leadingIcon = {
                 Icon(imageVector = Icons.Default.Phone, contentDescription = "")
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Done
-            )
+                keyboardType = KeyboardType.Phone
+            ),
+            singleLine = true
         )
 
         // E-mail*
@@ -88,31 +99,31 @@ fun ContactDataPortrait(
             value = formUiState.email,
             onValueChange = { dataViewModel.setEmail(it) },
             label = { Text(text = stringResource(R.string.email) + "*") },
-            leadingIcon =  {
+            leadingIcon = {
                 Icon(imageVector = Icons.Default.Email, contentDescription = "")
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Done
-            )
+                keyboardType = KeyboardType.Email
+            ),
+            singleLine = true
         )
 
         // Country*
-        TextFieldSpinnerSelector(
+        AutoCompleteTextField(
             label = stringResource(R.string.country) + "*",
             imageVector = Icons.Default.Place,
-            items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
-            selection = formUiState.country,
-            onSelectionChange = { dataViewModel.setCountry(it) }
+            suggestions = DataSource.latamCountries,
+            value = formUiState.country,
+            onValueChange = { dataViewModel.setCountry(it) }
         )
 
         // City
-        TextFieldSpinnerSelector(
+        AutoCompleteTextField(
             label = stringResource(R.string.city),
             imageVector = Icons.Default.Place,
-            items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
-            selection = formUiState.city,
-            onSelectionChange = { dataViewModel.setCity(it) }
+            suggestions = citiesForSelectedCountry,
+            value = formUiState.city,
+            onValueChange = { dataViewModel.setCity(it) },
         )
 
         // Address
@@ -123,15 +134,13 @@ fun ContactDataPortrait(
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
             },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            )
+            singleLine = true
         )
 
         // Next Button
         Button(onClick = onNextButtonClicked ) {
             Row {
-                Text(text = "Next")
+                Text(text = stringResource(R.string.next))
                 Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "")
             }
         }

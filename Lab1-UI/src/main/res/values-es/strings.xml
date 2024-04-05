@@ -22,4 +22,5 @@
     <string name="country">País</string>
     <string name="city">Ciudad</string>
     <string name="address">Dirección</string>
+    <string name="next">Siguiente</string>
 </resources>
