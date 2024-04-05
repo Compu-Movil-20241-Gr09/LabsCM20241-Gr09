@@ -1,10 +1,10 @@
 package co.edu.udea.compumovil.gr09_20241.lab1.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -45,27 +45,26 @@ fun AutoCompleteTextField(
             enabled = suggestions.isNotEmpty()
         )
 
-        if(expanded){
-            Column(
+        if (expanded) {
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary)
                     .padding(4.dp)
-            ){
+            ) {
                 suggestions.filter { it.contains(value, ignoreCase = true) }
                     .forEach { suggestion ->
-                        Box(
-                            modifier = Modifier
-                                .clickable {
-                                    onValueChange(suggestion)
-                                    expanded = false
-                                }
-                                .padding(vertical = 4.dp)
-                        ){
-                            Text(
+                        DropdownMenuItem(
+                            text= { Text(
                                 text = suggestion,
                                 color = MaterialTheme.colorScheme.background
-                            )
-                        }
+                            ) },
+                            onClick = {
+                                onValueChange(suggestion)
+                                expanded = false
+                            }
+                        )
                     }
             }
         }
