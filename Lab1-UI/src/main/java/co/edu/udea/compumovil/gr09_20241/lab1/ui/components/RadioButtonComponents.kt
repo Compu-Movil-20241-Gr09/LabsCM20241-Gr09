@@ -69,17 +69,13 @@ fun LabelledRadioGroup(
     selection: String,
     onItemClick: ((String) -> Unit)
 ){
-    /*
-    Column(horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text = label)
-        RadioGroup(items = items, selection = selection, onItemClick = onItemClick)
-    }*/
-
-    Row (
-        verticalAlignment = Alignment.CenterVertically
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Icon(imageVector = imageVector, contentDescription = "")
-        Text(text = label)
+        Row {
+            Icon(imageVector = imageVector, contentDescription = "")
+            Text(text = label)
+        }
         RadioGroup(items = items, selection = selection, onItemClick = onItemClick)
     }
 

@@ -2,47 +2,32 @@ package co.edu.udea.compumovil.gr09_20241.lab1.ui.components
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import co.edu.udea.compumovil.gr09_20241.lab1.R
+import androidx.compose.ui.unit.dp
 import java.util.Calendar
 import java.util.Date
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LabelledDatePicker(
     label: String,
     value: String,
-    onValueChange: ((String) -> Unit)
-){
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        BasicTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = label,
-            imageVector = Icons.Default.DateRange,
-            readOnly = true
-        )
-
-        DatePickerComponent(
-            onValueChange = onValueChange
-        )
-    }
-}
-
-@Composable
-fun DatePickerComponent(
     onValueChange: ((String) -> Unit)
 ){
     val mContext = LocalContext.current
@@ -77,10 +62,28 @@ fun DatePickerComponent(
         }, mYear, mMonth, mDay
     )
 
-    Button(onClick = {
-        mDatePickerDialog.show()
-    }
-    ) {
-        Text(text = stringResource(R.string.select_date), color = Color.White)
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(2.dp)
+                .clickable { mDatePickerDialog.show() },
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(text = label) },
+            leadingIcon =  {
+                Icon(imageVector = Icons.Default.DateRange, contentDescription = "Date")
+            },
+            enabled = false,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                //For Icons
+                disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant)
+        )
     }
 }
