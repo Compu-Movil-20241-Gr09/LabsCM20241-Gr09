@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
@@ -34,7 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr09_20241.lab1.R
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
-import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.SpinnerSelector
+import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldSpinnerSelector
 
 @Composable
 fun ContactDataScreen(
@@ -99,7 +98,7 @@ fun ContactDataPortrait(
         )
 
         // Country*
-        SpinnerSelector(
+        TextFieldSpinnerSelector(
             label = stringResource(R.string.country) + "*",
             imageVector = Icons.Default.Place,
             items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
@@ -108,7 +107,7 @@ fun ContactDataPortrait(
         )
 
         // City
-        SpinnerSelector(
+        TextFieldSpinnerSelector(
             label = stringResource(R.string.city),
             imageVector = Icons.Default.Place,
             items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
@@ -123,7 +122,10 @@ fun ContactDataPortrait(
             label = { Text(text = stringResource(R.string.address)) },
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
-            }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            )
         )
 
         // Next Button

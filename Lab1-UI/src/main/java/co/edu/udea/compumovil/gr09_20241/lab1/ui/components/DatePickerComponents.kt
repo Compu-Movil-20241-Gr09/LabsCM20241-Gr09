@@ -25,7 +25,7 @@ import java.util.Date
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LabelledDatePicker(
+fun TextFieldDatePicker(
     label: String,
     value: String,
     onValueChange: ((String) -> Unit)

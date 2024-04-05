@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Face
@@ -22,17 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr09_20241.lab1.R
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
-import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.LabelledDatePicker
+import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldDatePicker
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.LabelledRadioGroup
-import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.SpinnerSelector
+import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldSpinnerSelector
 
 @Composable
 fun PersonalDataScreen(
@@ -76,7 +77,10 @@ fun PersonalDataPortrait(
             label = { Text(text = stringResource(R.string.name) + "*") },
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
-            }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            )
         )
 
         // Last Name Input
@@ -86,7 +90,10 @@ fun PersonalDataPortrait(
             label = { Text(text = stringResource(R.string.last_name) + "*") },
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
-            }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            )
         )
 
         //  RadioGroup for Gender
@@ -99,14 +106,14 @@ fun PersonalDataPortrait(
         )
 
         // DatePicker for Birth date
-        LabelledDatePicker(
+        TextFieldDatePicker(
             label = stringResource(R.string.date_of_birth) + "*",
             value = formUiState.birth,
             onValueChange = { dataViewModel.setBirth(it) }
         )
 
         // School Grade Spinner
-        SpinnerSelector(
+        TextFieldSpinnerSelector(
             label = stringResource(R.string.school_grade),
             imageVector = Icons.Default.Info,
             items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
