@@ -73,7 +73,7 @@ fun ContactDataPortrait(
 ){
     val context = LocalContext.current
 
-    // Spinner de ciudades
+    // Cities filtered by country
     val citiesForSelectedCountry by remember(formUiState.country) {
         derivedStateOf {
             latamCities.filter { it.first == formUiState.country }
@@ -96,7 +96,8 @@ fun ContactDataPortrait(
                 Icon(imageVector = Icons.Default.Phone, contentDescription = "")
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Phone
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Next
             ),
             singleLine = true
         )
@@ -110,7 +111,8 @@ fun ContactDataPortrait(
                 Icon(imageVector = Icons.Default.Email, contentDescription = "")
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
             ),
             singleLine = true
         )
@@ -130,7 +132,7 @@ fun ContactDataPortrait(
             imageVector = Icons.Default.Place,
             suggestions = citiesForSelectedCountry,
             value = formUiState.city,
-            onValueChange = { dataViewModel.setCity(it) },
+            onValueChange = { dataViewModel.setCity(it) }
         )
 
         // Address
@@ -141,7 +143,10 @@ fun ContactDataPortrait(
             leadingIcon =  {
                 Icon(imageVector = Icons.Default.Person, contentDescription = "")
             },
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
 
 
