@@ -41,7 +41,7 @@ class DataViewModel: ViewModel() {
         }
     }
 
-    fun setPhoneNumber(inputPhoneNumber: Int){
+    fun setPhoneNumber(inputPhoneNumber: String){
         _uiState.update { currentState ->
             currentState.copy(phoneNumber = inputPhoneNumber)
         }

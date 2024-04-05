@@ -114,6 +114,7 @@ fun PersonalDataPortrait(
             onSelectionChange = { dataViewModel.setScholarity(it) }
         )
 
+        // Next Button
         Button(onClick = onNextButtonClicked ) {
             Row {
                 Text(text = "Next")

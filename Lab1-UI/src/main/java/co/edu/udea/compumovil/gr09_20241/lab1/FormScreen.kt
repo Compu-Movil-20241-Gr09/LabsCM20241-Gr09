@@ -98,7 +98,12 @@ fun FormApp(
                 )
             }
             composable(route = FormScreen.Contact.name) {
-                ContactDataScreen()
+                ContactDataScreen(
+                    dataViewModel = viewModel,
+                    onNextButtonClicked = {
+                        navController.navigate(FormScreen.Personal.name)
+                    }
+                )
             }
             composable(route = FormScreen.Summary.name) {
                 /* Por si quiero hacer la pantalla del resumen */

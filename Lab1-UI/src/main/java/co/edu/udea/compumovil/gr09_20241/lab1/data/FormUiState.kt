@@ -6,7 +6,7 @@ data class FormUiState(
     val gender: String = "",
     val birth: String = "",
     val scholarity: String = "",
-    val phoneNumber: Int = 0,
+    val phoneNumber: String = "",
     val address: String = "",
     val email: String = "",
     val country: String = "",

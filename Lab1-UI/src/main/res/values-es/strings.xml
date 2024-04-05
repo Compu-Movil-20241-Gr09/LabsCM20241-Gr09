@@ -17,4 +17,9 @@
     <string name="contact_information">Información de Contacto</string>
     <string name="school_grade">Grado de Escolaridad</string>
     <string name="select">Seleccionar</string>
+    <string name="phone_number">Número de Teléfono</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="country">País</string>
+    <string name="city">Ciudad</string>
+    <string name="address">Dirección</string>
 </resources>
