@@ -36,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr09_20241.lab1.R
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
+import co.edu.udea.compumovil.gr09_20241.lab1.logUserData
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldDatePicker
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.LabelledRadioGroup
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldSpinnerSelector
@@ -144,6 +145,7 @@ fun PersonalDataPortrait(
         ){
             Button(
                 onClick = {
+                    logUserData(formUiState)
                     onNextButtonClicked()
                 },
                 enabled = isPersonalDataValid(formUiState)

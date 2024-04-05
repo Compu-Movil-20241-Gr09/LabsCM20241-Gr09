@@ -1,5 +1,6 @@
 package co.edu.udea.compumovil.gr09_20241.lab1
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.ContactDataScreen
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.PersonalDataScreen
 
@@ -110,4 +112,24 @@ fun FormApp(
             }
         }
     }
+}
+
+fun logUserData(formUiState: FormUiState) {
+    val userInfoString = """
+        |Información personal:
+        |Nombre: ${formUiState.name}
+        |Género: ${formUiState.gender}
+        |Fecha de nacimiento: ${formUiState.birth}
+        |Escolaridad: ${formUiState.scholarity}
+        |
+        |Información de contacto:
+        |Teléfono: ${formUiState.phoneNumber}
+        |Dirección: ${formUiState.address}
+        |Email: ${formUiState.email}
+        |País: ${formUiState.country}
+        |Ciudad: ${formUiState.city}
+    """.trimMargin()
+
+    // User information log
+    Log.i("UserData", userInfoString)
 }

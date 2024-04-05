@@ -41,6 +41,7 @@ import co.edu.udea.compumovil.gr09_20241.lab1.R
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource
 import co.edu.udea.compumovil.gr09_20241.lab1.data.DataSource.latamCities
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
+import co.edu.udea.compumovil.gr09_20241.lab1.logUserData
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.AutoCompleteTextField
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldSpinnerSelector
 
@@ -166,6 +167,7 @@ fun ContactDataPortrait(
         ){
             Button(
                 onClick = {
+                    logUserData(formUiState)
                     onNextButtonClicked()
                 },
                 enabled = isContactDataValid(formUiState)
