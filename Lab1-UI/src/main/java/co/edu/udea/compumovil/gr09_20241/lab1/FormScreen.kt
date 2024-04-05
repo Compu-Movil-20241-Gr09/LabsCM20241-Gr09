@@ -29,11 +29,12 @@ import androidx.navigation.compose.rememberNavController
 import co.edu.udea.compumovil.gr09_20241.lab1.data.FormUiState
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.ContactDataScreen
 import co.edu.udea.compumovil.gr09_20241.lab1.ui.PersonalDataScreen
+import co.edu.udea.compumovil.gr09_20241.lab1.ui.SummaryDataScreen
 
 enum class FormScreen(@StringRes val title: Int){
     Personal(title = R.string.personal_information),
     Contact(title = R.string.contact_information),
-    Summary(title = R.string.app_name)
+    Summary(title = R.string.information_summary)
 }
 
 @Composable
@@ -103,12 +104,14 @@ fun FormApp(
                 ContactDataScreen(
                     dataViewModel = viewModel,
                     onNextButtonClicked = {
-                        navController.navigate(FormScreen.Personal.name)
+                        navController.navigate(FormScreen.Summary.name)
                     }
                 )
             }
             composable(route = FormScreen.Summary.name) {
-                /* Por si quiero hacer la pantalla del resumen */
+                SummaryDataScreen(
+                    dataViewModel = viewModel
+                )
             }
         }
     }

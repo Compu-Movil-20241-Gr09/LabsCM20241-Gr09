@@ -24,4 +24,5 @@
     <string name="address">Dirección</string>
     <string name="next">Siguiente</string>
     <string name="fill_required_fields">Por favor complete todos los campos obligatorios (*) antes de presionar Siguiente</string>
+    <string name="information_summary">Resumen de la Información</string>
 </resources>

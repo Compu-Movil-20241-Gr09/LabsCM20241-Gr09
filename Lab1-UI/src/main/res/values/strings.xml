@@ -23,4 +23,5 @@
     <string name="address">Address</string>
     <string name="next">Next</string>
     <string name="fill_required_fields">Please fill out all required fields (*) before pressing Next</string>
+    <string name="information_summary">Information Summary</string>
 </resources>
