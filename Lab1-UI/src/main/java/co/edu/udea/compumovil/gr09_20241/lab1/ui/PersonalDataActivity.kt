@@ -1,11 +1,11 @@
 package co.edu.udea.compumovil.gr09_20241.lab1.ui
 
 import android.content.res.Configuration
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Face
@@ -24,8 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -68,7 +70,7 @@ fun PersonalDataPortrait(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Name Input
@@ -118,11 +120,33 @@ fun PersonalDataPortrait(
             onSelectionChange = { dataViewModel.setScholarity(it) }
         )
 
+        Text(
+            modifier = Modifier
+                .padding(20.dp),
+            text = stringResource(R.string.fill_required_fields),
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp
+        )
+
         // Next Button
-        Button(onClick = onNextButtonClicked ) {
-            Row {
-                Text(text = "Next")
-                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "")
+        Row (
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ){
+            Button(
+                onClick = {
+                    onNextButtonClicked()
+                },
+                enabled = isPersonalDataValid(formUiState)
+            ) {
+                Row {
+                    Text(text = stringResource(R.string.next))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = ""
+                    )
+                }
             }
         }
     }
@@ -131,6 +155,12 @@ fun PersonalDataPortrait(
 @Composable
 fun PersonalDataLandscape(){
 
+}
+
+fun isPersonalDataValid(formUiState: FormUiState): Boolean {
+    return formUiState.name.isNotBlank() &&
+            formUiState.lastName.isNotBlank() &&
+            formUiState.birth.isNotBlank()
 }
 
 @Preview(showBackground = true, showSystemUi = true)
