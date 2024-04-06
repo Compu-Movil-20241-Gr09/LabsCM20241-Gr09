@@ -62,7 +62,11 @@ fun ContactDataScreen(
             onNextButtonClicked
         )
     }else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-        ContactDataLandscape()
+        ContactDataLandscape(
+            formUiState,
+            dataViewModel,
+            onNextButtonClicked
+        )
     }
 }
 
@@ -191,9 +195,137 @@ fun isContactDataValid(formUiState: FormUiState): Boolean {
 }
 
 @Composable
-fun ContactDataLandscape(){
-    Text(text = "Hola")
+fun ContactDataLandscape(
+    formUiState: FormUiState,
+    dataViewModel: DataViewModel,
+    onNextButtonClicked: () -> Unit
+) {
+    val context = LocalContext.current
+
+    // Cities filtered by country
+    val citiesForSelectedCountry by remember(formUiState.country) {
+        derivedStateOf {
+            latamCities.filter { it.first == formUiState.country }
+                .map { it.second }
+        }
+    }
+
+    Column (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Row for Phone Number and E-mail
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Phone Number*
+            OutlinedTextField(
+                value = formUiState.phoneNumber,
+                onValueChange = { dataViewModel.setPhoneNumber(it) },
+                label = { Text(text = stringResource(R.string.phone_number) + "*") },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Phone, contentDescription = "")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true
+            )
+
+            // E-mail*
+            OutlinedTextField(
+                value = formUiState.email,
+                onValueChange = { dataViewModel.setEmail(it) },
+                label = { Text(text = stringResource(R.string.email) + "*") },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Email, contentDescription = "")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true
+            )
+        }
+
+        // Row for Country and City
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Country*
+            AutoCompleteTextField(
+                label = stringResource(R.string.country) + "*",
+                imageVector = Icons.Default.Place,
+                suggestions = DataSource.latamCountries,
+                value = formUiState.country,
+                onValueChange = { dataViewModel.setCountry(it) }
+            )
+
+            // City
+            AutoCompleteTextField(
+                label = stringResource(R.string.city),
+                imageVector = Icons.Default.Place,
+                suggestions = citiesForSelectedCountry,
+                value = formUiState.city,
+                onValueChange = { dataViewModel.setCity(it) }
+            )
+        }
+
+
+
+        // Address
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = formUiState.address,
+            onValueChange = { dataViewModel.setAddress(it) },
+            label = { Text(text = stringResource(R.string.address)) },
+            leadingIcon =  {
+                Icon(imageVector = Icons.Default.Person, contentDescription = "")
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
+        )
+
+        Text(
+            modifier = Modifier.padding(20.dp),
+            text = stringResource(R.string.fill_required_fields),
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp
+        )
+
+        // Next Button
+        Row (
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ){
+            Button(
+                onClick = {
+                    logUserData(formUiState)
+                    onNextButtonClicked()
+                },
+                enabled = isPersonalDataValid(formUiState)
+            ) {
+                Row {
+                    Text(text = stringResource(R.string.next))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = ""
+                    )
+                }
+            }
+        }
+    }
 }
+
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

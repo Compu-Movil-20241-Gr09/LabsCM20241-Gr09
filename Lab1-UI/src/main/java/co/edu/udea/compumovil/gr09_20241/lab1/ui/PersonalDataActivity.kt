@@ -2,6 +2,7 @@ package co.edu.udea.compumovil.gr09_20241.lab1.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,6 +44,7 @@ import co.edu.udea.compumovil.gr09_20241.lab1.ui.components.TextFieldSpinnerSele
 
 @Composable
 fun PersonalDataScreen(
+
     dataViewModel: DataViewModel = viewModel(),
     onNextButtonClicked: () -> Unit
 ){
@@ -59,7 +61,11 @@ fun PersonalDataScreen(
             onNextButtonClicked
         )
     }else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-        PersonalDataLandscape()
+        PersonalDataLandscape(
+            formUiState,
+            dataViewModel,
+            onNextButtonClicked
+        )
     }
 }
 
@@ -163,8 +169,103 @@ fun PersonalDataPortrait(
 }
 
 @Composable
-fun PersonalDataLandscape(){
+fun PersonalDataLandscape(
+    formUiState: FormUiState,
+    dataViewModel: DataViewModel,
+    onNextButtonClicked: () -> Unit
+) {
+    val context = LocalContext.current
 
+    Column(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Name & Last Name Inputs
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            OutlinedTextField(
+                value = formUiState.name,
+                onValueChange = { dataViewModel.setName(it) },
+                label = { Text(text = stringResource(R.string.name) + "*") },
+                leadingIcon =  {
+                    Icon(imageVector = Icons.Default.Person, contentDescription = "")
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = formUiState.lastName,
+                onValueChange = { dataViewModel.setLastName(it) },
+                label = { Text(text = stringResource(R.string.last_name) + "*") },
+                leadingIcon =  {
+                    Icon(imageVector = Icons.Default.Person, contentDescription = "")
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true
+            )
+        }
+        // Gender RadioGroup
+        LabelledRadioGroup(
+            imageVector = Icons.Default.Face,
+            label = stringResource(R.string.gender),
+            items = DataSource.genderOptions.map { id -> context.resources.getString(id) },
+            selection = formUiState.gender,
+            onItemClick =   { dataViewModel.setGender(it)}
+        )
+
+        // DatePicker for Birth date
+        TextFieldDatePicker(
+            label = stringResource(R.string.date_of_birth) + "*",
+            value = formUiState.birth,
+            onValueChange = { dataViewModel.setBirth(it) }
+        )
+
+        // School Grade Spinner
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            TextFieldSpinnerSelector(
+                label = stringResource(R.string.school_grade),
+                imageVector = Icons.Default.Info,
+                items = DataSource.scholarityLevels.map { id -> context.resources.getString(id) },
+                selection = formUiState.scholarity,
+                onSelectionChange = { dataViewModel.setScholarity(it) }
+            )
+        }
+
+        // Next Button
+        Row (
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ){
+            Button(
+                onClick = {
+                    logUserData(formUiState)
+                    onNextButtonClicked()
+                },
+                enabled = isPersonalDataValid(formUiState)
+            ) {
+                Row {
+                    Text(text = stringResource(R.string.next))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = ""
+                    )
+                }
+            }
+        }
+
+    }
 }
 
 fun isPersonalDataValid(formUiState: FormUiState): Boolean {
@@ -190,10 +291,19 @@ fun PersonalScreenPreview(){
     }
 }
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PersonalLandscapePreview(){
+    val dataViewModel = DataViewModel()
+    val formUiState by dataViewModel.uiState.collectAsState()
+    val navController: NavHostController = rememberNavController()
     MaterialTheme {
-        PersonalDataLandscape()
+        PersonalDataLandscape(
+            formUiState,
+            dataViewModel,
+            onNextButtonClicked = {
+                navController.navigate("contactData")
+            }
+        )
     }
 }
